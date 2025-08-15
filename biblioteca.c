@@ -227,6 +227,42 @@ void listarEmprestimos() {
     }
 }
 
+void devolverLivro() {
+    int codLivro, codUsuario;
+    printf("Codigo do usuario que esta devolvendo: ");
+    scanf("%d", &codUsuario);
+    printf("Codigo do livro a ser devolvido: ");
+    scanf("%d", &codLivro);
+
+    int emprestimoIdx = -1;
+    for (int i = 0; i < totalEmprestimos; i++) {
+        if (emprestimos[i].codUsuario == codUsuario && emprestimos[i].codLivro == codLivro) {
+            emprestimoIdx = i;
+            break;
+        }
+    }
+
+    if (emprestimoIdx == -1) {
+        printf("Erro: Emprestimo nao encontrado.\n");
+        return;
+    }
+
+    for (int i = emprestimoIdx; i < totalEmprestimos - 1; i++) {
+        emprestimos[i] = emprestimos[i + 1];
+    }
+    totalEmprestimos--;
+
+    for (int i = 0; i < totalLivros; i++) {
+        if (livros[i].codigo == codLivro) {
+            livros[i].quantidade_disponivel++;
+            break;
+        }
+    }
+
+    salvarDados();
+    printf("Devolucao realizada com sucesso!\n");
+}
+
 
 
 
