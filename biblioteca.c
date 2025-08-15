@@ -70,7 +70,10 @@ void salvarDados() {
 
 void carregarDados() {
     FILE *f;
-
+    totalLivros = 0;
+    totalUsuarios = 0;
+    totalEmprestimos = 0;
+    
     f = fopen("livros.txt", "r");
     if (f != NULL) {
         while (fscanf(f, "%d;%49[^;];%49[^;];%d;%d\n",
@@ -149,6 +152,10 @@ void cadastrarUsuario() {
 
 void listarLivros() {
     printf("\n-*- Lista de Livros -*-\n");
+    if (totalLivros == 0) {
+        printf("Nenhum livro cadastrado.\n");
+        return;
+    }
     for (int i = 0; i < totalLivros; i++) {
         printf("%d - %s (%s) | Total: %d | Disponiveis: %d\n",
                livros[i].codigo,
@@ -263,13 +270,40 @@ void devolverLivro() {
     printf("Devolucao realizada com sucesso!\n");
 }
 
+// MENU
 
+void menu() {
+    int opcao;
+    carregarDados();
 
+    do {
+        printf("\n===== Sistema de Biblioteca =====\n");
+        printf("1 - Cadastrar Livro\n");
+        printf("2 - Cadastrar Usuario\n");
+        printf("3 - Listar Livros\n");
+        printf("4 - Listar Usuarios\n");
+        printf("5 - Realizar Emprestimo\n");
+        printf("6 - Devolver Livro\n");
+        printf("7 - Listar Emprestimos\n");
+        printf("0 - Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
 
-
-// MAIN
+        switch (opcao) {
+            case 1: cadastrarLivro(); break;
+            case 2: cadastrarUsuario(); break;
+            case 3: listarLivros(); break;
+            case 4: listarUsuarios(); break;
+            case 5: emprestarLivro(); break;
+            case 6: devolverLivro(); break;
+            case 7: listarEmprestimos(); break;
+            case 0: printf("Encerrando o programa e salvando dados...\n"); break;
+            default: printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (opcao != 0);
+}
 
 int main() {
-    printf("Sistema de Gerenciamento de Biblioteca\n");
+    menu();
     return 0;
 }
