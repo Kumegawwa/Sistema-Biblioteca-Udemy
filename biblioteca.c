@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// --- Estruturas de Dados ---
+//estruturas de dados
 
 struct Livro {
     int codigo;
@@ -23,7 +23,7 @@ struct Emprestimo {
     int codLivro;
 };
 
-// --- "Banco de Dados" em Memória ---
+//bd em memória
 
 struct Livro livros[100];
 int totalLivros = 0;
@@ -34,7 +34,7 @@ int totalUsuarios = 0;
 struct Emprestimo emprestimos[100];
 int totalEmprestimos = 0;
 
-// ======= Arquivos =======
+//arquivos
 
 void salvarDados() {
     FILE *f;
@@ -106,12 +106,75 @@ void carregarDados() {
     }
 }
 
+//sistema 
+
+void cadastrarLivro() {
+    struct Livro l;
+    printf("Codigo do livro: ");
+    scanf("%d", &l.codigo);
+    getchar();
+
+    printf("Titulo: ");
+    scanf(" %[^\n]", l.titulo);
+
+    printf("Autor: ");
+    scanf(" %[^\n]", l.autor);
+
+    printf("Quantidade total: ");
+    scanf("%d", &l.quantidade_total);
+
+    l.quantidade_disponivel = l.quantidade_total;
+    livros[totalLivros++] = l;
+
+    salvarDados();
+    printf("Livro cadastrado com sucesso!\n");
+}
+
+void cadastrarUsuario() {
+    struct Usuario u;
+    printf("Codigo do usuario: ");
+    scanf("%d", &u.codigo);
+    getchar();
+
+    printf("Nome: ");
+    scanf(" %[^\n]", u.nome);
+
+    printf("Idade: ");
+    scanf("%d", &u.idade);
+
+    usuarios[totalUsuarios++] = u;
+    salvarDados();
+    printf("Usuario cadastrado com sucesso!\n");
+}
+
+void listarLivros() {
+    printf("\n-*- Lista de Livros -*-\n");
+    for (int i = 0; i < totalLivros; i++) {
+        printf("%d - %s (%s) | Total: %d | Disponiveis: %d\n",
+               livros[i].codigo,
+               livros[i].titulo,
+               livros[i].autor,
+               livros[i].quantidade_total,
+               livros[i].quantidade_disponivel);
+    }
+}
+
+void listarUsuarios() {
+    printf("\n-*- Lista de Usuarios -*-\n");
+    for (int i = 0; i < totalUsuarios; i++) {
+        printf("%d - %s | Idade: %d\n",
+               usuarios[i].codigo,
+               usuarios[i].nome,
+               usuarios[i].idade);
+    }
+}
 
 
 
 
 
-// --- Função Principal (main) ---
+
+// MAIN
 
 int main() {
     printf("Sistema de Gerenciamento de Biblioteca\n");
