@@ -169,6 +169,63 @@ void listarUsuarios() {
     }
 }
 
+void emprestarLivro() {
+    int codLivro, codUsuario;
+    printf("Codigo do usuario: ");
+    scanf("%d", &codUsuario);
+    printf("Codigo do livro: ");
+    scanf("%d", &codLivro);
+
+    int livroIdx = -1;
+    for (int i = 0; i < totalLivros; i++) {
+        if (livros[i].codigo == codLivro) {
+            livroIdx = i;
+            break;
+        }
+    }
+
+    if (livroIdx == -1) {
+        printf("Erro: Livro nao encontrado.\n");
+        return;
+    }
+
+    if (livros[livroIdx].quantidade_disponivel <= 0) {
+        printf("Erro: Livro indisponivel para emprestimo.\n");
+        return;
+    }
+
+    int usuarioExiste = 0;
+    for(int i = 0; i < totalUsuarios; i++) {
+        if (usuarios[i].codigo == codUsuario) {
+            usuarioExiste = 1;
+            break;
+        }
+    }
+
+    if (!usuarioExiste) {
+        printf("Erro: Usuario nao encontrado.\n");
+        return;
+    }
+
+    livros[livroIdx].quantidade_disponivel--;
+
+    struct Emprestimo e;
+    e.codUsuario = codUsuario;
+    e.codLivro = codLivro;
+    emprestimos[totalEmprestimos++] = e;
+
+    salvarDados();
+    printf("Emprestimo realizado com sucesso!\n");
+}
+
+void listarEmprestimos() {
+    printf("\n--- Emprestimos em Andamento ---\n");
+    for (int i = 0; i < totalEmprestimos; i++) {
+        printf("Usuario %d emprestou o livro %d\n",
+               emprestimos[i].codUsuario,
+               emprestimos[i].codLivro);
+    }
+}
 
 
 
